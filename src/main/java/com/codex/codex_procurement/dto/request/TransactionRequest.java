@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 public class TransactionRequest {
 
     private String vendorProductId;
+
+    @NotNull(message = "quantity is required")
+    @Min(value = 1, message = "stock must be greater than or equal 1")
     private Integer quantity;
 
 }
