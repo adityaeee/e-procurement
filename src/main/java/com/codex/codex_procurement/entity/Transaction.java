@@ -14,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 @Table(name = ConstantTable.TRANSACTION)
 public class Transaction {
     @Id
