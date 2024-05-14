@@ -21,5 +21,4 @@ public class Vendor {
     @Column(name = "name")
     private String name;
 
-
 }
