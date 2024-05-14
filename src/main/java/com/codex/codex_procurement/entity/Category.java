@@ -1,11 +1,14 @@
 package com.codex.codex_procurement.entity;
 
 import com.codex.codex_procurement.constant.ConstantTable;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,4 +23,8 @@ public class Category {
 
    @Column(name = "name",nullable = false)
    private String name;
+
+   @OneToMany(mappedBy = "category")
+   @JsonManagedReference
+   private List<Product> products;
 }
