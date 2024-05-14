@@ -1,13 +1,22 @@
 package com.codex.codex_procurement.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.codex.codex_procurement.constant.ConstantTable;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = ConstantTable.CATEGORY)
 public class Category {
    @Id
    @GeneratedValue(strategy = GenerationType.UUID)
    private String id;
+
+   @Column(name = "name",nullable = false)
+   private String name;
 }
