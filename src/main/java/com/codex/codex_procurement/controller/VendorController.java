@@ -2,7 +2,7 @@ package com.codex.codex_procurement.controller;
 
 
 import com.codex.codex_procurement.constant.APIUrl;
-import com.codex.codex_procurement.dto.request.NewVendorRequest;
+import com.codex.codex_procurement.constant.ResponseMessage;
 import com.codex.codex_procurement.dto.request.VendorRequest;
 import com.codex.codex_procurement.dto.response.CommonResponse;
 import com.codex.codex_procurement.dto.response.VendorResponse;
@@ -34,9 +34,16 @@ public class VendorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-//    @GetMapping
-//    public ResponseEntity<CommonResponse<Vendor>> findByid(String id){
-//        Vendor vendor = vendorService.getById(id);
-//        CommonResponse<Vendor> response = CommonResponse.<Vendor>
-//    }
+    @GetMapping(path = APIUrl.PATH_VAR_ID)
+    public ResponseEntity<CommonResponse<VendorResponse>> findById(@PathVariable String id){
+        VendorResponse vendor = vendorService.getByIdListProduct(id);
+        CommonResponse<VendorResponse> response = CommonResponse.<VendorResponse>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_GET_DATA)
+                .data(vendor)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+
 }
