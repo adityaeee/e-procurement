@@ -17,6 +17,9 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,6 +99,34 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Page<TransactionResponse> getAll(SearchTransactionRequest request) {
-        return null;
+
+        if(request.getPage() <= 0){
+            request.setPage(1);
+        }
+
+        String validSortBy;
+        if ("productName".equalsIgnoreCase(request.getSortBy()) || "VendorName".equalsIgnoreCase(request.getSortBy()) || "productPrice".equalsIgnoreCase(request.getSortBy()) || "quantity".equalsIgnoreCase(request.getSortBy()) ||"totalPrice".equalsIgnoreCase(request.getSortBy())||"transDate".equalsIgnoreCase(request.getSortBy())){
+            validSortBy = request.getSortBy();
+        }else {
+            validSortBy = "transDate";
+        }
+
+        Sort sort = Sort.by(Sort.Direction.fromString(request.getDirection()));
+
+        Pageable pageable = PageRequest.of((request.getPage() -1) ,request.getSize(),sort);
+
+        Page<Transaction> all = transactionRepository.findAll(pageable);
+        Page<TransactionResponse> allResponse = all.map(transaction -> {
+            TransactionResponse response = TransactionResponse.builder()
+                   .productName(transaction.getVendorProduct().getProduct().getName())
+                   .VendorName(transaction.getVendorProduct().getVendor().getName())
+                   .productPrice(transaction.getVendorProduct().getPrice())
+                   .quantity(transaction.getQuantity())
+                   .transDate(transaction.getTransDate())
+                   .totalPrice(transaction.getTotalPrice())
+                   .build();
+            return response;
+        });
+        return allResponse;
     }
 }
