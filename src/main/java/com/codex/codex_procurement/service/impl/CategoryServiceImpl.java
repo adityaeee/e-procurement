@@ -7,7 +7,9 @@ import com.codex.codex_procurement.repository.CategoryRepository;
 import com.codex.codex_procurement.service.CategoryService;
 import com.codex.codex_procurement.utils.ValidationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getById(String id) {
-        return null;
+        return findByIdOrThrowNotFound(id);
     }
 
     @Override
@@ -37,5 +39,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteById(String id) {
 
+    }
+    private Category findByIdOrThrowNotFound(String id) {
+        return categoryRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found"));
     }
 }

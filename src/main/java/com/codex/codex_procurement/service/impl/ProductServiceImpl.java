@@ -41,7 +41,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse getById(String id) {
-        return null;
+        Product byIdOrThrowNotFound = findByIdOrThrowNotFound(id);
+        return ProductResponse.builder()
+                .nameProduct(byIdOrThrowNotFound.getName())
+                .nameCategory(byIdOrThrowNotFound.getCategory().getName())
+                .stock(byIdOrThrowNotFound.getStock())
+                .build();
     }
 
     @Override
@@ -64,6 +69,6 @@ public class ProductServiceImpl implements ProductService {
 
     }
     private Product findByIdOrThrowNotFound(String id) {
-        return productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not fount"));
+        return productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found"));
     }
 }
