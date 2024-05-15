@@ -30,10 +30,10 @@ import java.util.Date;
 @Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
-    private TransactionRepository transactionRepository;
-    private VendorProductService vendorProductService;
-    private VendorService vendorService;
-    private ProductService productService;
+    private final TransactionRepository transactionRepository;
+    private final VendorProductService vendorProductService;
+    private final VendorService vendorService;
+    private final ProductService productService;
     private final ValidationUtil validationUtil;
 
 

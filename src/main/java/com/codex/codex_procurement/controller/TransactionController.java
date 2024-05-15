@@ -28,4 +28,16 @@ public class TransactionController {
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
+
+    @GetMapping(path = APIUrl.PATH_VAR_ID)
+    public ResponseEntity<CommonResponse<TransactionResponse>> getTransactionById(
+            @PathVariable String id){
+        TransactionResponse transactionResponse = transactionService.getById(id);
+        CommonResponse<TransactionResponse> res = CommonResponse.<TransactionResponse>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_GET_DATA)
+                .data(transactionResponse)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
 }
