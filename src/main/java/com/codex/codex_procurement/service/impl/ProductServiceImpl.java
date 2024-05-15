@@ -28,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
         Product newProduct = Product.builder()
                 .name(newProductRequest.getName())
                 .category(category)
+                .stock(0)
                 .build();
         productRepository.saveAndFlush(newProduct);
 

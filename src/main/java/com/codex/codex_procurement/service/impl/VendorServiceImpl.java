@@ -29,16 +29,17 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class VendorServiceImpl implements VendorService {
 
-    private VendorRepository vendorRepository;
-    private VendorProductRepository vendorProductRepository;
-    private VendorProductService vendorProductService;
-    private ProductService productService;
-    private ValidationUtil validationUtil;
+    private final VendorRepository vendorRepository;
+    private final VendorProductRepository vendorProductRepository;
+    private final VendorProductService vendorProductService;
+    private final ProductService productService;
+    private final ValidationUtil validationUtil;
 
 
     @Transactional(rollbackOn = Exception.class)
     @Override
     public VendorResponse create(VendorRequest vendorRequest) {
+        System.out.println("===================" + vendorRequest);
         Vendor vendor = Vendor.builder()
                 .name(vendorRequest.getVendorName())
                 .build();

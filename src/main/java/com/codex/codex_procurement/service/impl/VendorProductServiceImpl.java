@@ -19,7 +19,7 @@ public class VendorProductServiceImpl implements VendorProductService {
 
     @Override
     public List<VendorProduct> createBulk(List<VendorProduct> vendorProducts) {
-        return null;
+        return vendorProductRepository.saveAllAndFlush(vendorProducts);
     }
 
     @Override
