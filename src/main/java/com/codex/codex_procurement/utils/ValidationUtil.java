@@ -13,10 +13,9 @@ import java.util.Set;
 public class ValidationUtil {
     private final Validator validator;
 
-    public void validate(Object object) {
-        Set<ConstraintViolation<Object>> validate = validator.validate(object);
-
-        if (!validate.isEmpty()) {
+    public void validate(Object o) {
+        Set<ConstraintViolation<Object>> validate = validator.validate(o);
+        if(!validate.isEmpty()){
             throw new ConstraintViolationException(validate);
         }
     }

@@ -22,14 +22,14 @@ public class ErrorController {
     }
 
 //    error validation
-    @ExceptionHandler({ConstraintViolationException.class})
-    public ResponseEntity<CommonResponse<?>> responseResponseEntityConstraintViolationException (ConstraintViolationException exception) {
-        CommonResponse<?> response = CommonResponse.builder()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .message(exception.getMessage())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(response);
-    }
+@ExceptionHandler({ConstraintViolationException.class})
+public ResponseEntity<CommonResponse<?>> constraintViolationExceptionHandler (ConstraintViolationException e) {
+    CommonResponse<?> response = CommonResponse.builder()
+            .statusCode(HttpStatus.BAD_REQUEST.value())
+            .message(e.getMessage())
+            .build();
+    return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(response);
+}
 }

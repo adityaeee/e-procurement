@@ -12,5 +12,5 @@ public class NewProductRequest {
     @NotBlank(message = "Name is required")
     private String name;
     @NotNull(message = "Category is required")
-    private String categoryId;
+    private String category_id;
 }
