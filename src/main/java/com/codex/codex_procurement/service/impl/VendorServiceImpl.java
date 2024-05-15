@@ -4,12 +4,16 @@ import com.codex.codex_procurement.dto.request.SearchVendorRequest;
 import com.codex.codex_procurement.dto.request.VendorRequest;
 import com.codex.codex_procurement.dto.response.VendorResponse;
 import com.codex.codex_procurement.entity.Vendor;
+import com.codex.codex_procurement.repository.VendorProductRepository;
 import com.codex.codex_procurement.repository.VendorRepository;
+import com.codex.codex_procurement.service.VendorProductService;
 import com.codex.codex_procurement.service.VendorService;
+import com.codex.codex_procurement.utils.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -19,9 +23,14 @@ import java.util.Optional;
 public class VendorServiceImpl implements VendorService {
 
     private VendorRepository vendorRepository;
+    private VendorProductRepository vendorProductRepository;
+    private VendorProductService vendorProductService;
+    private ValidationUtil validationUtil;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public VendorResponse create(VendorRequest vendorRequest) {
+
         return null;
     }
 
