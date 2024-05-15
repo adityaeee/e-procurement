@@ -1,5 +1,6 @@
 package com.codex.codex_procurement.service.impl;
 
+import com.codex.codex_procurement.dto.request.UpdatePriceRequest;
 import com.codex.codex_procurement.entity.Transaction;
 import com.codex.codex_procurement.entity.VendorProduct;
 import com.codex.codex_procurement.repository.VendorProductRepository;
@@ -35,4 +36,16 @@ public class VendorProductServiceImpl implements VendorProductService {
         return  vendorProductRepository.findAll();
     }
 
+
+    @Override
+    public VendorProduct update(UpdatePriceRequest request) {
+        VendorProduct byVendorIdAndProductId = vendorProductRepository.findByVendorIdAndProductId(request.getVendorId(), request.getProductId());
+        VendorProduct updatePrice = VendorProduct.builder()
+                .id(byVendorIdAndProductId.getId())
+                .product(byVendorIdAndProductId.getProduct())
+                .vendor(byVendorIdAndProductId.getVendor())
+                .price(request.getPrice())
+                .build();
+        return vendorProductRepository.saveAndFlush(updatePrice);
+    }
 }

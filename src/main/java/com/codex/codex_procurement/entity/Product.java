@@ -1,6 +1,7 @@
 package com.codex.codex_procurement.entity;
 
 import com.codex.codex_procurement.constant.ConstantTable;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
