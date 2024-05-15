@@ -18,7 +18,7 @@ public class VendorSpecification {
                         criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%"+request.getName().toLowerCase()+"%")
                 );
             }
-            return query.where(predicates.toArray(new jakarta.persistence.criteria.Predicate[]{})).getRestriction();
+            return query.where(predicates.toArray(new Predicate[]{})).getRestriction();
         };
     }
 }

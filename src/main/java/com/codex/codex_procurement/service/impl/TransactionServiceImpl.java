@@ -12,6 +12,7 @@ import com.codex.codex_procurement.service.ProductService;
 import com.codex.codex_procurement.service.TransactionService;
 import com.codex.codex_procurement.service.VendorProductService;
 import com.codex.codex_procurement.service.VendorService;
+import com.codex.codex_procurement.specification.TransactionSpesification;
 import com.codex.codex_procurement.utils.ValidationUtil;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +21,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Service
@@ -46,10 +49,10 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionResponse create(TransactionRequest request) {
         validationUtil.validate(request);
         VendorProduct vendorProduct = vendorProductService.getById(request.getVendorProductId());
-        System.out.println("==========================");
-        log.info("Vendor product" + request.toString());
         Product product = vendorProduct.getProduct();
         Vendor vendor = vendorProduct.getVendor();
+
+        product.setStock(product.getStock() + request.getQuantity());
 
         Transaction trx = Transaction.builder()
                 .vendorProduct(vendorProduct)
@@ -61,16 +64,14 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.saveAndFlush(trx);
 
         //menyiapkan response ke controller
-        TransactionResponse response = TransactionResponse.builder()
+        return TransactionResponse.builder()
                 .productName(product.getName())
-                .VendorName(vendor.getName())
+                .vendorName(vendor.getName())
                 .productPrice(vendorProduct.getPrice())
                 .quantity(trx.getQuantity())
                 .transDate(trx.getTransDate())
                 .totalPrice(trx.getTotalPrice())
                 .build();
-
-        return response;
     }
 
     @Override
@@ -83,7 +84,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         TransactionResponse response = TransactionResponse.builder()
                 .productName(product.getName())
-                .VendorName(vendor.getName())
+                .vendorName(vendor.getName())
                 .productPrice(vendorProduct.getPrice())
                 .quantity(trx.getQuantity())
                 .transDate(trx.getTransDate())
@@ -92,7 +93,7 @@ public class TransactionServiceImpl implements TransactionService {
         return response;
     }
 
-    public Transaction getByIdOrThrowNotFound(String id) {
+    private Transaction getByIdOrThrowNotFound(String id) {
         return transactionRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found"));
     }
 
@@ -100,35 +101,30 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Page<TransactionResponse> getAll(SearchTransactionRequest request) {
 
-        log.info("ERRORRRRRRRRRR" + request);
-
         if(request.getPage() <= 0){
             request.setPage(1);
         }
 
-        String validSortBy;
-        if ("productName".equalsIgnoreCase(request.getSortBy()) || "VendorName".equalsIgnoreCase(request.getSortBy()) || "productPrice".equalsIgnoreCase(request.getSortBy()) || "quantity".equalsIgnoreCase(request.getSortBy()) ||"totalPrice".equalsIgnoreCase(request.getSortBy())||"transDate".equalsIgnoreCase(request.getSortBy())){
-            validSortBy = request.getSortBy();
-        }else {
-            validSortBy = "transDate";
-        }
-
-        Sort sort = Sort.by(Sort.Direction.fromString(request.getDirection()));
+        Sort sort = Sort.by(Sort.Direction.fromString(request.getDirection()), request.getSortBy());
 
         Pageable pageable = PageRequest.of((request.getPage() -1) ,request.getSize(),sort);
 
-        Page<Transaction> all = transactionRepository.findAll(pageable);
-        Page<TransactionResponse> allResponse = all.map(transaction -> {
-            TransactionResponse response = TransactionResponse.builder()
-                   .productName(transaction.getVendorProduct().getProduct().getName())
-                   .VendorName(transaction.getVendorProduct().getVendor().getName())
-                   .productPrice(transaction.getVendorProduct().getPrice())
-                   .quantity(transaction.getQuantity())
-                   .transDate(transaction.getTransDate())
-                   .totalPrice(transaction.getTotalPrice())
-                   .build();
-            return response;
+        Specification<Transaction> specification = TransactionSpesification.getSpecification(request);
+
+        Page<Transaction> transactionRepositoryAll = transactionRepository.findAll(specification,pageable);
+
+        return transactionRepositoryAll.map(transaction -> {
+            Product product = productService.getByIdProduct(transaction.getVendorProduct().getProduct().getId());
+            Vendor vendor = vendorService.getById(transaction.getVendorProduct().getVendor().getId());
+
+            return TransactionResponse.builder()
+                    .productName(product.getName())
+                    .vendorName(vendor.getName())
+                    .productPrice(transaction.getVendorProduct().getPrice())
+                    .quantity(transaction.getQuantity())
+                    .transDate(transaction.getTransDate())
+                    .totalPrice(transaction.getTotalPrice())
+                    .build();
         });
-        return allResponse;
     }
 }

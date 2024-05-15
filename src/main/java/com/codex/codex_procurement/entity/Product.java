@@ -1,6 +1,7 @@
 package com.codex.codex_procurement.entity;
 
 import com.codex.codex_procurement.constant.ConstantTable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,10 +26,13 @@ public class Product {
     @Column(name = "stock", columnDefinition = "INT CHECK (stock >= 0)")
     private Integer stock;
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnore
+    @JsonBackReference
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @OneToMany(mappedBy = "product")
     @JsonManagedReference
+    @JsonIgnore
     private List<VendorProduct> productVendors;
 }

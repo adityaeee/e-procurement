@@ -1,18 +1,17 @@
 package com.codex.codex_procurement.service.impl;
 
 import com.codex.codex_procurement.dto.request.SearchVendorRequest;
-import com.codex.codex_procurement.dto.request.UpdatePriceRequest;
-import com.codex.codex_procurement.dto.request.VendorProductRequest;
 import com.codex.codex_procurement.dto.request.VendorRequest;
-import com.codex.codex_procurement.dto.response.ProductResponse;
 import com.codex.codex_procurement.dto.response.VendorProductResponse;
 import com.codex.codex_procurement.dto.response.VendorResponse;
 import com.codex.codex_procurement.entity.Product;
+import com.codex.codex_procurement.entity.Transaction;
 import com.codex.codex_procurement.entity.Vendor;
 import com.codex.codex_procurement.entity.VendorProduct;
 import com.codex.codex_procurement.repository.VendorProductRepository;
 import com.codex.codex_procurement.repository.VendorRepository;
 import com.codex.codex_procurement.service.ProductService;
+import com.codex.codex_procurement.service.TransactionService;
 import com.codex.codex_procurement.service.VendorProductService;
 import com.codex.codex_procurement.service.VendorService;
 import com.codex.codex_procurement.specification.VendorSpecification;
@@ -29,11 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -43,12 +37,14 @@ public class VendorServiceImpl implements VendorService {
     private final VendorProductRepository vendorProductRepository;
     private final VendorProductService vendorProductService;
     private final ProductService productService;
+//    private final TransactionService transactionService;
     private final ValidationUtil validationUtil;
 
 
     @Transactional(rollbackOn = Exception.class)
     @Override
     public VendorResponse create(VendorRequest vendorRequest) {
+        validationUtil.validate(vendorRequest);
         Vendor vendor = Vendor.builder()
                 .name(vendorRequest.getVendorName())
                 .build();
@@ -68,8 +64,11 @@ public class VendorServiceImpl implements VendorService {
                             .build();
                 }).toList();
 
-        vendorProductService.createBulk(vendorProducts);
+        List<VendorProduct> vendorProductServiceBulk = vendorProductService.createBulk(vendorProducts);
         vendor.setVendorProducts(vendorProducts);
+
+
+//        Transaction transaction
 
         List<VendorProductResponse> responses = vendorProducts.stream()
                 .map(res -> {
@@ -133,6 +132,7 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public Vendor update(Vendor vendor) {
+        validationUtil.validate(vendor);
         findByIdOrThrowNotFound(vendor.getId());
         return vendorRepository.saveAndFlush(vendor);
     }
@@ -140,8 +140,8 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public void delete(String id) {
         Vendor vendor = findByIdOrThrowNotFound(id);
+        vendorProductRepository.deleteAll(vendor.getVendorProducts());
         vendorRepository.delete(vendor);
-
     }
 
     private Vendor findByIdOrThrowNotFound(String id){

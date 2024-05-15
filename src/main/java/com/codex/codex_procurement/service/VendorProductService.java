@@ -9,5 +9,5 @@ public interface VendorProductService {
     List<VendorProduct> createBulk (List<VendorProduct> vendorProducts);
     VendorProduct getById (String id);
     List<VendorProduct> getAll();
-    VendorProduct update(UpdatePriceRequest request);
+
 }
