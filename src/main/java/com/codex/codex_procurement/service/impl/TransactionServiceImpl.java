@@ -54,7 +54,10 @@ public class TransactionServiceImpl implements TransactionService {
                 .totalPrice(vendorProduct.getPrice() * request.getQuantity())
                 .transDate(new Date())
                 .build();
+        //save ke database
+        transactionRepository.saveAndFlush(trx);
 
+        //menyiapkan response ke controller
         TransactionResponse response = TransactionResponse.builder()
                 .productName(product.getName())
                 .VendorName(vendor.getName())
