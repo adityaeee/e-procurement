@@ -54,7 +54,7 @@ public class TransactionController {
             @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "vendorName") String sortBy,
             @RequestParam(name = "direction", defaultValue = "asc",required = false) String direction,
-            @RequestParam(name = "date", required = false) @JsonFormat(pattern = "yyyy-MM-dd") Date date
+            @RequestParam(name = "date", required = false,defaultValue = "2023-05-15") @JsonFormat(pattern = "yyyy-MM-dd") String date
     ) {
         SearchTransactionRequest request = SearchTransactionRequest.builder()
                 .page(page)

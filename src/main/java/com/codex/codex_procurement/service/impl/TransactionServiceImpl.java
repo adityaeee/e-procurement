@@ -100,6 +100,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Page<TransactionResponse> getAll(SearchTransactionRequest request) {
 
+        log.info("ERRORRRRRRRRRR" + request);
+
         if(request.getPage() <= 0){
             request.setPage(1);
         }

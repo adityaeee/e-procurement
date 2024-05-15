@@ -19,5 +19,5 @@ public class SearchTransactionRequest {
     private String sortBy;
     private String direction;
 
-    private Date date;
+    private String date;
 }
