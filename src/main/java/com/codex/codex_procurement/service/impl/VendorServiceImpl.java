@@ -14,10 +14,15 @@ import com.codex.codex_procurement.repository.VendorRepository;
 import com.codex.codex_procurement.service.ProductService;
 import com.codex.codex_procurement.service.VendorProductService;
 import com.codex.codex_procurement.service.VendorService;
+import com.codex.codex_procurement.specification.VendorSpecification;
 import com.codex.codex_procurement.utils.ValidationUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -39,7 +44,6 @@ public class VendorServiceImpl implements VendorService {
     @Transactional(rollbackOn = Exception.class)
     @Override
     public VendorResponse create(VendorRequest vendorRequest) {
-        System.out.println("===================" + vendorRequest);
         Vendor vendor = Vendor.builder()
                 .name(vendorRequest.getVendorName())
                 .build();
@@ -86,8 +90,79 @@ public class VendorServiceImpl implements VendorService {
         return null;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
-    public Page<Vendor> getAll(SearchVendorRequest vendorRequest) {
+    public Page<Vendor> getAll(SearchVendorRequest request) {
+        if(request.getPage() <= 0) {
+            request.setPage(1);
+        }
+
+        Sort sort = Sort.by(Sort.Direction.fromString(request.getDirection()), request.getSortBy());
+
+        Pageable pageable = PageRequest.of(request.getPage() -1, request.getSize(), sort);
+
+        Specification<Vendor> specification = VendorSpecification.getSpecification(request);
+
+        Page<Vendor> vendors =  vendorRepository.findAll(specification, pageable);
+
         return null;
     }
 
