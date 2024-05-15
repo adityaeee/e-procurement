@@ -1,6 +1,7 @@
 package com.codex.codex_procurement.entity;
 
 import com.codex.codex_procurement.constant.ConstantTable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,5 +31,6 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     @JsonManagedReference
+    @JsonIgnore
     private List<VendorProduct> productVendors;
 }

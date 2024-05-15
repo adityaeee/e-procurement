@@ -124,12 +124,9 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public VendorResponse update(Vendor vendor) {
-        Vendor update = findByIdOrThrowNotFound(vendor.getId());
-        vendorRepository.saveAndFlush(vendor);
-        return VendorResponse.builder()
-                .vendorName(update.getName())
-                .build();
+    public Vendor update(Vendor vendor) {
+        findByIdOrThrowNotFound(vendor.getId());
+        return vendorRepository.saveAndFlush(vendor);
     }
 
     @Override

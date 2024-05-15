@@ -15,7 +15,7 @@ public interface VendorService {
     Vendor getById(String id);
     VendorResponse getByIdListProduct (String id);
     Page<Vendor> getAll(SearchVendorRequest vendorRequest);
-    VendorResponse update(Vendor vendor);
+    Vendor update(Vendor vendor);
     void delete(String id);
 
 
