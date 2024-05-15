@@ -1,6 +1,5 @@
 package com.codex.codex_procurement.service.impl;
 
-import com.codex.codex_procurement.entity.Vendor;
 import com.codex.codex_procurement.entity.VendorProduct;
 import com.codex.codex_procurement.repository.VendorProductRepository;
 import com.codex.codex_procurement.service.VendorProductService;
@@ -28,6 +27,8 @@ public class VendorProductServiceImpl implements VendorProductService {
 
     }
 
-
-
+    @Override
+    public List<VendorProduct> getAll() {
+        return  vendorProductRepository.findAll();
+    }
 }
