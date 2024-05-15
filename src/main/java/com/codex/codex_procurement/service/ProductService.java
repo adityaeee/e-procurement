@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 public interface ProductService {
     ProductResponse create(NewProductRequest newProductRequest);
     ProductResponse getById(String id);
+    Product getByIdProduct(String id);
     Page<ProductResponse> getAll(SearchProductRequest request);
     Product update(Product product);
     void deleteById(String id);
