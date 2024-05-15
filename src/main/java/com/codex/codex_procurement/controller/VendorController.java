@@ -9,6 +9,7 @@ import com.codex.codex_procurement.dto.response.CommonResponse;
 import com.codex.codex_procurement.dto.response.PagingResponse;
 import com.codex.codex_procurement.dto.response.VendorResponse;
 import com.codex.codex_procurement.entity.Vendor;
+import com.codex.codex_procurement.service.VendorProductService;
 import com.codex.codex_procurement.service.VendorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import java.util.List;
 public class VendorController {
 
     private final VendorService vendorService;
+    private final VendorProductService vendorProductService;
 
     @PostMapping
     public ResponseEntity<CommonResponse<VendorResponse>> createNewVendor(
@@ -32,7 +34,7 @@ public class VendorController {
         VendorResponse newVendor = vendorService.create(vendorRequest);
         CommonResponse<VendorResponse> response = CommonResponse.<VendorResponse>builder()
                 .statusCode(HttpStatus.CREATED.value())
-                .message("successfuly create new vendor")
+                .message(ResponseMessage.SUCCESS_SAVE_DATA)
                 .data(newVendor)
                 .build();
 
@@ -79,7 +81,7 @@ public class VendorController {
 
         CommonResponse<List<Vendor>> response = CommonResponse.<List<Vendor>>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("success get all products")
+                .message(ResponseMessage.SUCCESS_GET_DATA)
                 .data(allVendor.getContent())
                 .paging(pagingResponse)
                 .build();
@@ -87,5 +89,24 @@ public class VendorController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping
+    public ResponseEntity<CommonResponse<VendorResponse>> updateVendor(@RequestBody Vendor vendor){
+        VendorResponse update = vendorService.update(vendor);
+        CommonResponse<VendorResponse> response = CommonResponse.<VendorResponse>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_UPDATE_DATA)
+                .data(update)
+                .build();
+        return ResponseEntity.ok(response);
+    }
 
+    @DeleteMapping(path = APIUrl.PATH_VAR_ID)
+    public ResponseEntity<CommonResponse<?>> deleteById(@PathVariable String id){
+        vendorService.delete(id);
+        CommonResponse<Vendor> response = CommonResponse.<Vendor>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_DELETE_DATA + id)
+                .build();
+        return ResponseEntity.ok(response);
+    }
 }

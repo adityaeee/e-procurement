@@ -31,4 +31,5 @@ public class VendorProductServiceImpl implements VendorProductService {
     public List<VendorProduct> getAll() {
         return  vendorProductRepository.findAll();
     }
+
 }
