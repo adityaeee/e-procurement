@@ -1,6 +1,7 @@
 package com.codex.codex_procurement.service.impl;
 
 import com.codex.codex_procurement.dto.request.SearchVendorRequest;
+import com.codex.codex_procurement.dto.request.UpdatePriceRequest;
 import com.codex.codex_procurement.dto.request.VendorProductRequest;
 import com.codex.codex_procurement.dto.request.VendorRequest;
 import com.codex.codex_procurement.dto.response.ProductResponse;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -144,5 +146,16 @@ public class VendorServiceImpl implements VendorService {
 
     private Vendor findByIdOrThrowNotFound(String id){
         return vendorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "vendor not found"));
+    }
+
+    @Override
+    public VendorProductResponse updatePrice(UpdatePriceRequest request) {
+        VendorProduct update = vendorProductService.update(request);
+        VendorProductResponse response = VendorProductResponse.builder()
+                .nameProduct(update.getProduct().getName())
+                .price(update.getPrice())
+                .build();
+
+        return response;
     }
 }

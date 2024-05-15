@@ -3,8 +3,10 @@ package com.codex.codex_procurement.controller;
 
 import com.codex.codex_procurement.constant.APIUrl;
 import com.codex.codex_procurement.constant.ResponseMessage;
+import com.codex.codex_procurement.dto.request.UpdatePriceRequest;
 import com.codex.codex_procurement.dto.request.VendorRequest;
 import com.codex.codex_procurement.dto.response.CommonResponse;
+import com.codex.codex_procurement.dto.response.VendorProductResponse;
 import com.codex.codex_procurement.dto.response.VendorResponse;
 import com.codex.codex_procurement.entity.Vendor;
 import com.codex.codex_procurement.service.VendorService;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class VendorController {
 
     private final VendorService vendorService;
+
 
     @PostMapping
     public ResponseEntity<CommonResponse<VendorResponse>> createNewVendor(
@@ -43,6 +46,20 @@ public class VendorController {
                 .data(vendor)
                 .build();
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping(path = "/updatePrice")
+    public ResponseEntity<CommonResponse<VendorProductResponse>> updatePrice(
+            @RequestBody UpdatePriceRequest updatePriceRequest
+            ){
+        VendorProductResponse vendorProductResponse = vendorService.updatePrice(updatePriceRequest);
+        CommonResponse<VendorProductResponse> response = CommonResponse.<VendorProductResponse>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(ResponseMessage.SUCCESS_UPDATE_DATA)
+                .data(vendorProductResponse)
+                .build();
+        return ResponseEntity.ok(response);
+
     }
 
 
