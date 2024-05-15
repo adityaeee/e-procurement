@@ -14,6 +14,7 @@ import com.codex.codex_procurement.service.VendorProductService;
 import com.codex.codex_procurement.service.VendorService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.util.Date;
 @Data
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
     private TransactionRepository transactionRepository;
@@ -38,6 +40,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionResponse create(TransactionRequest request) {
         VendorProduct vendorProduct = vendorProductService.getById(request.getVendorProductId());
+        System.out.println("==========================");
+        log.info("Vendor product" + request.toString());
         Product product = vendorProduct.getProduct();
         Vendor vendor = vendorProduct.getVendor();
 
@@ -63,7 +67,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionResponse getById(String id) {
         Transaction trx = getByIdOrThrowNotFound(id);
-        VendorProduct vendorProduct = vendorProductService.getById(request.getVendorProductId());
+        VendorProduct vendorProduct = vendorProductService.getById(trx.getVendorProduct().getId());
         Product product = vendorProduct.getProduct();
         Vendor vendor = vendorProduct.getVendor();
 
