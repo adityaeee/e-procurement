@@ -19,7 +19,7 @@ public class Product {
     private String id;
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "stock", nullable = false, columnDefinition = "INT CHECK (stock >= 0)")
+    @Column(name = "stock", columnDefinition = "INT CHECK (stock >= 0)")
     private Integer stock;
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
