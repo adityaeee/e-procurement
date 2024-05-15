@@ -1,11 +1,15 @@
 package com.codex.codex_procurement.service.impl;
 
 import com.codex.codex_procurement.dto.request.SearchVendorRequest;
+import com.codex.codex_procurement.dto.request.VendorProductRequest;
 import com.codex.codex_procurement.dto.request.VendorRequest;
+import com.codex.codex_procurement.dto.response.ProductResponse;
 import com.codex.codex_procurement.dto.response.VendorResponse;
 import com.codex.codex_procurement.entity.Vendor;
+import com.codex.codex_procurement.entity.VendorProduct;
 import com.codex.codex_procurement.repository.VendorProductRepository;
 import com.codex.codex_procurement.repository.VendorRepository;
+import com.codex.codex_procurement.service.ProductService;
 import com.codex.codex_procurement.service.VendorProductService;
 import com.codex.codex_procurement.service.VendorService;
 import com.codex.codex_procurement.utils.ValidationUtil;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,11 +30,24 @@ public class VendorServiceImpl implements VendorService {
     private VendorRepository vendorRepository;
     private VendorProductRepository vendorProductRepository;
     private VendorProductService vendorProductService;
+    private ProductService productService;
     private ValidationUtil validationUtil;
 
-    @Transactional(rollbackFor = Exception.class)
+
     @Override
     public VendorResponse create(VendorRequest vendorRequest) {
+        Vendor vendor = Vendor.builder()
+                .name(vendorRequest.getVendorName())
+                .build();
+
+        vendorRepository.saveAndFlush(vendor);
+
+        List<VendorProduct> vendorProducts = vendorRequest.getVendorProductRequests().stream()
+                .map(vendorProductRequest -> {
+                    ProductResponse product = productService.getById(vendorProductRequest.getProductId());
+
+                }).toList();
+
 
         return null;
     }
@@ -62,7 +80,7 @@ public class VendorServiceImpl implements VendorService {
 
     }
 
-    public Vendor findByIdOrThrowNotFound(String id){
-        return vendorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "customer not found"));
+    private Vendor findByIdOrThrowNotFound(String id){
+        return vendorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "vendor not found"));
     }
 }

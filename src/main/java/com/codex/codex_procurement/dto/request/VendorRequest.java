@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class VendorRequest {
-    private String vendorId;
+    private String vendorName;
     private List<VendorProductRequest> vendorProductRequests;
 }
