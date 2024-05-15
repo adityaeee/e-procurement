@@ -53,7 +53,7 @@ public class VendorServiceImpl implements VendorService {
 
     }
 
-    public Vendor findByIdOrThrowNotFound(String id){
-        return vendorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "customer not found"));
+    private Vendor findByIdOrThrowNotFound(String id){
+        return vendorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "vendor not found"));
     }
 }
