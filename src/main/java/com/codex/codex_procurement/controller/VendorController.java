@@ -90,9 +90,9 @@ public class VendorController {
     }
 
     @PutMapping
-    public ResponseEntity<CommonResponse<VendorResponse>> updateVendor(@RequestBody Vendor vendor){
-        VendorResponse update = vendorService.update(vendor);
-        CommonResponse<VendorResponse> response = CommonResponse.<VendorResponse>builder()
+    public ResponseEntity<CommonResponse<Vendor>> updateVendor(@RequestBody Vendor vendor){
+        Vendor update = vendorService.update(vendor);
+        CommonResponse<Vendor> response = CommonResponse.<Vendor>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(ResponseMessage.SUCCESS_UPDATE_DATA)
                 .data(update)
@@ -105,7 +105,7 @@ public class VendorController {
         vendorService.delete(id);
         CommonResponse<Vendor> response = CommonResponse.<Vendor>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message(ResponseMessage.SUCCESS_DELETE_DATA + id)
+                .message(ResponseMessage.SUCCESS_DELETE_DATA)
                 .build();
         return ResponseEntity.ok(response);
     }

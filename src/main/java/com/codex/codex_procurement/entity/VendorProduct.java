@@ -23,12 +23,12 @@ public class VendorProduct {
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")
-    @JsonBackReference
+    @JsonBackReference ("vendorReference")
     private Vendor vendor;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonBackReference
+    @JsonBackReference ("productReference")
     private Product product;
 
     @Column(name = "price")
