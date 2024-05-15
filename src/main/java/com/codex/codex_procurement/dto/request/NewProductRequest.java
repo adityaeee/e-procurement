@@ -11,6 +11,6 @@ import lombok.*;
 public class NewProductRequest {
     @NotBlank(message = "Name is required")
     private String name;
-    @NotBlank(message = "Name is required")
+    @NotNull(message = "Category is required")
     private String categoryId;
 }

@@ -1,6 +1,8 @@
 package com.codex.codex_procurement.dto.request;
 
 
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +21,6 @@ public class SearchTransactionRequest {
     private String sortBy;
     private String direction;
 
-    private Date date;
+    private Boolean month;
+    private String date;
 }

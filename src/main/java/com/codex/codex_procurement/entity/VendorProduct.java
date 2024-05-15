@@ -1,6 +1,7 @@
 package com.codex.codex_procurement.entity;
 
 import com.codex.codex_procurement.constant.ConstantTable;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,10 +23,12 @@ public class VendorProduct {
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")
+    @JsonBackReference ("vendorReference")
     private Vendor vendor;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference ("productReference")
     private Product product;
 
     @Column(name = "price")

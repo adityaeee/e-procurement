@@ -7,6 +7,8 @@ import com.codex.codex_procurement.dto.response.VendorResponse;
 import com.codex.codex_procurement.entity.Vendor;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 
 public interface VendorService {
     VendorResponse create(VendorRequest vendorRequest);

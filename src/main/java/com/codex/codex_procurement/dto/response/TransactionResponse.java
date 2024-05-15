@@ -13,7 +13,7 @@ import java.util.Date;
 @Builder
 public class TransactionResponse {
     private String productName;
-    private String VendorName;
+    private String vendorName;
     private Long productPrice;
     private Integer quantity;
     private Long totalPrice;

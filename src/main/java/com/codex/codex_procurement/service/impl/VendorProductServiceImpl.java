@@ -1,8 +1,9 @@
 package com.codex.codex_procurement.service.impl;
 
-import com.codex.codex_procurement.entity.Vendor;
+import com.codex.codex_procurement.entity.Transaction;
 import com.codex.codex_procurement.entity.VendorProduct;
 import com.codex.codex_procurement.repository.VendorProductRepository;
+import com.codex.codex_procurement.service.TransactionService;
 import com.codex.codex_procurement.service.VendorProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class VendorProductServiceImpl implements VendorProductService {
 
     @Override
     public List<VendorProduct> createBulk(List<VendorProduct> vendorProducts) {
-        return null;
+        return vendorProductRepository.saveAllAndFlush(vendorProducts);
     }
 
     @Override
@@ -28,6 +29,9 @@ public class VendorProductServiceImpl implements VendorProductService {
 
     }
 
-
+    @Override
+    public List<VendorProduct> getAll() {
+        return  vendorProductRepository.findAll();
+    }
 
 }
