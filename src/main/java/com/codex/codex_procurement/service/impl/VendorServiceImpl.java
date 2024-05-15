@@ -41,6 +41,7 @@ public class VendorServiceImpl implements VendorService {
     @Transactional(rollbackOn = Exception.class)
     @Override
     public VendorResponse create(VendorRequest vendorRequest) {
+        validationUtil.validate(vendorRequest);
         Vendor vendor = Vendor.builder()
                 .name(vendorRequest.getVendorName())
                 .build();
@@ -125,6 +126,7 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public Vendor update(Vendor vendor) {
+        validationUtil.validate(vendor);
         findByIdOrThrowNotFound(vendor.getId());
         return vendorRepository.saveAndFlush(vendor);
     }
