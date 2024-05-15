@@ -50,17 +50,19 @@ public class TransactionController {
 
     @GetMapping
     public ResponseEntity<CommonResponse<List<TransactionResponse>>> getAllTransaction(
-            @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
-            @RequestParam(name = "sort", required = false, defaultValue = "vendorName") String sortBy,
-            @RequestParam(name = "direction", defaultValue = "asc",required = false) String direction,
-            @RequestParam(name = "date", required = false,defaultValue = "2023-05-15") @JsonFormat(pattern = "yyyy-MM-dd") String date
+            @RequestParam(name = "page",defaultValue = "1") Integer page,
+            @RequestParam(name = "size",defaultValue = "10") Integer size,
+            @RequestParam(name = "sort", defaultValue = "transDate") String sortBy,
+            @RequestParam(name = "direction", defaultValue = "asc") String direction,
+            @RequestParam(name = "month", defaultValue= "false") Boolean month,
+            @RequestParam(name = "date", required = false) @JsonFormat(pattern = "yyyy-MM-dd") String date
     ) {
         SearchTransactionRequest request = SearchTransactionRequest.builder()
                 .page(page)
                 .size(size)
                 .sortBy(sortBy)
                 .direction(direction)
+                .month(month)
                 .date(date)
                 .build();
 

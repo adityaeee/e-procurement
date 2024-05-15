@@ -5,11 +5,13 @@ import com.codex.codex_procurement.dto.request.VendorRequest;
 import com.codex.codex_procurement.dto.response.VendorProductResponse;
 import com.codex.codex_procurement.dto.response.VendorResponse;
 import com.codex.codex_procurement.entity.Product;
+import com.codex.codex_procurement.entity.Transaction;
 import com.codex.codex_procurement.entity.Vendor;
 import com.codex.codex_procurement.entity.VendorProduct;
 import com.codex.codex_procurement.repository.VendorProductRepository;
 import com.codex.codex_procurement.repository.VendorRepository;
 import com.codex.codex_procurement.service.ProductService;
+import com.codex.codex_procurement.service.TransactionService;
 import com.codex.codex_procurement.service.VendorProductService;
 import com.codex.codex_procurement.service.VendorService;
 import com.codex.codex_procurement.specification.VendorSpecification;
@@ -35,6 +37,7 @@ public class VendorServiceImpl implements VendorService {
     private final VendorProductRepository vendorProductRepository;
     private final VendorProductService vendorProductService;
     private final ProductService productService;
+//    private final TransactionService transactionService;
     private final ValidationUtil validationUtil;
 
 
@@ -60,8 +63,11 @@ public class VendorServiceImpl implements VendorService {
                             .build();
                 }).toList();
 
-        vendorProductService.createBulk(vendorProducts);
+        List<VendorProduct> vendorProductServiceBulk = vendorProductService.createBulk(vendorProducts);
         vendor.setVendorProducts(vendorProducts);
+
+
+//        Transaction transaction
 
         List<VendorProductResponse> responses = vendorProducts.stream()
                 .map(res -> {
