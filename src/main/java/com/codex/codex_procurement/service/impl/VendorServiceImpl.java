@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 @RequiredArgsConstructor
 public class VendorServiceImpl implements VendorService {
@@ -92,10 +94,10 @@ public class VendorServiceImpl implements VendorService {
 
         List<VendorProduct> vendorProducts = vendorProductService.getAll();
 
-        List<VendorProduct> productVendor = vendorProducts.stream().filter(
-                product -> product.getProduct().getId().equals(vendor.getId())
-        ).toList();
 
+        List<VendorProduct> productVendor = vendorProducts.stream().filter(
+                product -> product.getVendor().getId().equals(vendor.getId())
+        ).toList();
 
         List<VendorProductResponse> vendorProductResponses = productVendor.stream()
                 .map(vendorProduct -> {
