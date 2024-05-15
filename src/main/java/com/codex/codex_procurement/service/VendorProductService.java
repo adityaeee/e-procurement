@@ -1,5 +1,6 @@
 package com.codex.codex_procurement.service;
 
+import com.codex.codex_procurement.dto.request.UpdatePriceRequest;
 import com.codex.codex_procurement.entity.VendorProduct;
 
 import java.util.List;

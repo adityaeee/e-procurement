@@ -147,4 +147,15 @@ public class VendorServiceImpl implements VendorService {
     private Vendor findByIdOrThrowNotFound(String id){
         return vendorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "vendor not found"));
     }
+
+    @Override
+    public VendorProductResponse updatePrice(UpdatePriceRequest request) {
+        VendorProduct update = vendorProductService.update(request);
+        VendorProductResponse response = VendorProductResponse.builder()
+                .nameProduct(update.getProduct().getName())
+                .price(update.getPrice())
+                .build();
+
+        return response;
+    }
 }

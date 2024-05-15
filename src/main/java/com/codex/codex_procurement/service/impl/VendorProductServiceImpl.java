@@ -5,6 +5,7 @@ import com.codex.codex_procurement.entity.VendorProduct;
 import com.codex.codex_procurement.repository.VendorProductRepository;
 import com.codex.codex_procurement.service.TransactionService;
 import com.codex.codex_procurement.service.VendorProductService;
+import com.codex.codex_procurement.service.VendorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
