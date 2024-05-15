@@ -29,6 +29,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -94,6 +95,7 @@ public class VendorServiceImpl implements VendorService {
         List<VendorProduct> productVendor = vendorProducts.stream().filter(
                 product -> product.getProduct().getId().equals(vendor.getId())
         ).toList();
+
 
         List<VendorProductResponse> vendorProductResponses = productVendor.stream()
                 .map(vendorProduct -> {
