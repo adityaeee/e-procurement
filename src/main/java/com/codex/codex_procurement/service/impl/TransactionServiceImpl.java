@@ -12,6 +12,7 @@ import com.codex.codex_procurement.service.ProductService;
 import com.codex.codex_procurement.service.TransactionService;
 import com.codex.codex_procurement.service.VendorProductService;
 import com.codex.codex_procurement.service.VendorService;
+import com.codex.codex_procurement.utils.ValidationUtil;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +34,14 @@ public class TransactionServiceImpl implements TransactionService {
     private VendorProductService vendorProductService;
     private VendorService vendorService;
     private ProductService productService;
+    private final ValidationUtil validationUtil;
 
 
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public TransactionResponse create(TransactionRequest request) {
+        validationUtil.validate(request);
         VendorProduct vendorProduct = vendorProductService.getById(request.getVendorProductId());
         System.out.println("==========================");
         log.info("Vendor product" + request.toString());
