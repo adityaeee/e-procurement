@@ -1,18 +1,23 @@
 package com.codex.codex_procurement.dto.request;
 
-import jakarta.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NewVendorRequest {
+public class SearchTransactionRequest {
+    private Integer page;
+    private Integer size;
 
-    @NotNull(message = "name is required")
-    private String name;
+    private String sortBy;
+    private String direction;
 
+    private Date date;
 }
