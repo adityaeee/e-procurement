@@ -82,7 +82,27 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public VendorResponse getByIdListProduct(String id) {
-        return null;
+        Vendor vendor = findByIdOrThrowNotFound(id);
+
+        List<VendorProduct> vendorProducts = vendorProductService.getAll();
+
+        List<VendorProduct> productVendor = vendorProducts.stream().filter(
+                product -> product.getProduct().getId().equals(vendor.getId())
+        ).toList();
+
+        List<VendorProductResponse> vendorProductResponses = productVendor.stream()
+                .map(vendorProduct -> {
+                    return VendorProductResponse.builder()
+                            .nameProduct(vendorProduct.getProduct().getName())
+                            .price(vendorProduct.getPrice())
+                            .build();
+                }).toList();
+
+        return VendorResponse.builder()
+                .vendorName(vendor.getName())
+                .vendorProductResponses(vendorProductResponses)
+                .build();
+
     }
 
 

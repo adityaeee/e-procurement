@@ -6,6 +6,7 @@ import com.codex.codex_procurement.dto.request.NewVendorRequest;
 import com.codex.codex_procurement.dto.request.VendorRequest;
 import com.codex.codex_procurement.dto.response.CommonResponse;
 import com.codex.codex_procurement.dto.response.VendorResponse;
+import com.codex.codex_procurement.entity.Vendor;
 import com.codex.codex_procurement.service.VendorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,9 @@ public class VendorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-
+//    @GetMapping
+//    public ResponseEntity<CommonResponse<Vendor>> findByid(String id){
+//        Vendor vendor = vendorService.getById(id);
+//        CommonResponse<Vendor> response = CommonResponse.<Vendor>
+//    }
 }
