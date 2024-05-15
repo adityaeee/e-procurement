@@ -1,9 +1,7 @@
 package com.codex.codex_procurement.service.impl;
 
 import com.codex.codex_procurement.dto.request.SearchVendorRequest;
-import com.codex.codex_procurement.dto.request.VendorProductRequest;
 import com.codex.codex_procurement.dto.request.VendorRequest;
-import com.codex.codex_procurement.dto.response.ProductResponse;
 import com.codex.codex_procurement.dto.response.VendorProductResponse;
 import com.codex.codex_procurement.dto.response.VendorResponse;
 import com.codex.codex_procurement.entity.Product;
@@ -28,10 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -130,16 +124,19 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public Vendor update(Vendor vendor) {
-        findByIdOrThrowNotFound(vendor.getId());
-        return vendorRepository.saveAndFlush(vendor);
+    public VendorResponse update(Vendor vendor) {
+        Vendor update = findByIdOrThrowNotFound(vendor.getId());
+        vendorRepository.saveAndFlush(vendor);
+        return VendorResponse.builder()
+                .vendorName(update.getName())
+                .build();
     }
 
     @Override
     public void delete(String id) {
         Vendor vendor = findByIdOrThrowNotFound(id);
+        vendorProductRepository.deleteAll(vendor.getVendorProducts());
         vendorRepository.delete(vendor);
-
     }
 
     private Vendor findByIdOrThrowNotFound(String id){
