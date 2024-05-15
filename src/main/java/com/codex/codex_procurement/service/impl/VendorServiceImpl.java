@@ -1,6 +1,7 @@
 package com.codex.codex_procurement.service.impl;
 
 import com.codex.codex_procurement.dto.request.SearchVendorRequest;
+import com.codex.codex_procurement.dto.request.UpdatePriceRequest;
 import com.codex.codex_procurement.dto.request.VendorRequest;
 import com.codex.codex_procurement.dto.response.VendorProductResponse;
 import com.codex.codex_procurement.dto.response.VendorResponse;
