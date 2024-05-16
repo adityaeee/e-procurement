@@ -1,6 +1,7 @@
 package com.codex.codex_procurement.entity;
 
 import com.codex.codex_procurement.constant.ConstantTable;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -14,20 +15,25 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
-@Table(name = ConstantTable.VENDOR)
-public class Vendor {
+@Builder
+@Table(name = ConstantTable.PRODUCT)
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "stock", columnDefinition = "INT CHECK (stock >= 0)")
+    private Integer stock;
+    @ManyToOne
+    @JsonIgnore
+    @JsonBackReference
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @OneToMany(mappedBy = "vendor")
+    @OneToMany(mappedBy = "product")
     @JsonManagedReference
     @JsonIgnore
-    private List<VendorProduct> vendorProducts;
-
+    private List<VendorProduct> productVendors;
 }

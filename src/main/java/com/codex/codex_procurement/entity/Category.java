@@ -12,22 +12,21 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
-@Table(name = ConstantTable.VENDOR)
-public class Vendor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+@Table(name = ConstantTable.CATEGORY)
+public class Category {
+   @Id
+   @GeneratedValue(strategy = GenerationType.UUID)
+   private String id;
 
-    @Column(name = "name")
-    private String name;
+   @Column(name = "name",nullable = false)
+   private String name;
 
-    @OneToMany(mappedBy = "vendor")
-    @JsonManagedReference
-    @JsonIgnore
-    private List<VendorProduct> vendorProducts;
-
+   @OneToMany(mappedBy = "category")
+   @JsonManagedReference
+   @JsonIgnore
+   private List<Product> products;
 }

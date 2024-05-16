@@ -1,6 +1,5 @@
 package com.codex.codex_procurement.dto.request;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NewVendorRequest {
+public class VendorProductRequest {
 
-    @NotNull(message = "name is required")
-    private String name;
-
+    private String productId;
+    private Long price;
+    private Integer stock;
 }
