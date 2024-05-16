@@ -5,34 +5,46 @@ import com.codex.codex_procurement.entity.Transaction;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class TransactionSpesification {
     public static Specification<Transaction> getSpecification (SearchTransactionRequest request) {
         return (root, query, criteriaBuilder) -> {
-//
-//            Integer targetMonth = criteriaBuilder.function("MONTH", Integer.class, root.get("date"));
-//            Integer targetYear = criteriaBuilder.function("YEAR", Integer.class, root.get("date"));
 
             List<Predicate> predicates = new ArrayList<>();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+
+
+            if (request.getDate() != null && request.getEndDate() != null){
+                try{
+                    LocalDate parseDate = LocalDate.parse(request.getDate(), dateTimeFormatter);
+                    LocalDate parseEndDate = LocalDate.parse(request.getEndDate(), dateTimeFormatter);
+                    predicates.add(criteriaBuilder.between(root.get("transDate"), parseDate, parseEndDate));
+                }catch (Exception e){
+                    throw new RuntimeException("ERROR PARSING DATE");
+                }
+
+                return query.where(predicates.toArray(new Predicate[]{})).getRestriction();
+
+            }
 
             if (request.getDate() != null) {
-                if (request.getMonth()) {
-                    Predicate monthPredicate = criteriaBuilder.equal(criteriaBuilder.function("MONTH", Integer.class, root.get("date")), request.getDate());
-                    Predicate yearPredicate = criteriaBuilder.equal(criteriaBuilder.function("YEAR", Integer.class, root.get("date")), request.getDate());
-                    predicates.add(criteriaBuilder.and(monthPredicate, yearPredicate));
-                } else {
-                    predicates.add(criteriaBuilder.equal(root.get("date"), request.getDate()));
+                try{
+                    LocalDate parseDate = LocalDate.parse(request.getDate(), dateTimeFormatter);
+                    Predicate datePredicate = criteriaBuilder.equal(root.get("transDate"), parseDate);
+                    predicates.add(datePredicate);
+
+                }catch (Exception e){
+                    throw new RuntimeException("ERROR PARSING DATE");
                 }
             }
-//
-//            if (request.getDate() != null) {
-//                predicates.add(criteriaBuilder.equal(root.get("date"), request.getDate()));
-//
-//            }
 
             return query.where(predicates.toArray(new Predicate[]{})).getRestriction();
         };
