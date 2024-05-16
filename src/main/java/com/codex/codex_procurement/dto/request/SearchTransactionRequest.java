@@ -20,7 +20,6 @@ public class SearchTransactionRequest {
 
     private String sortBy;
     private String direction;
-
-    private Boolean month;
+    private String endDate;
     private String date;
 }

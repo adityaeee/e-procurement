@@ -2,6 +2,7 @@ package com.codex.codex_procurement.entity;
 
 import com.codex.codex_procurement.constant.ConstantTable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,8 +28,9 @@ public class Transaction {
     @Column(name = "total_price",nullable = false,columnDefinition = "BIGINT CHECK (total_price >= 0)")
     private Long totalPrice;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "trans_date", updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date transDate;
 
     @ManyToOne

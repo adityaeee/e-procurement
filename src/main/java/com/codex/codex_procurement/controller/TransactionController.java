@@ -54,15 +54,15 @@ public class TransactionController {
             @RequestParam(name = "size",defaultValue = "10") Integer size,
             @RequestParam(name = "sort", defaultValue = "transDate") String sortBy,
             @RequestParam(name = "direction", defaultValue = "asc") String direction,
-            @RequestParam(name = "month", defaultValue= "false") Boolean month,
-            @RequestParam(name = "date", required = false) @JsonFormat(pattern = "yyyy-MM-dd") String date
+            @RequestParam(name = "date", required = false) @JsonFormat(pattern = "yyyy-MM-dd") String date,
+            @RequestParam(name = "endDate", required = false) @JsonFormat(pattern = "yyyy-MM-dd") String endDate
     ) {
         SearchTransactionRequest request = SearchTransactionRequest.builder()
                 .page(page)
                 .size(size)
                 .sortBy(sortBy)
                 .direction(direction)
-                .month(month)
+                .endDate(endDate)
                 .date(date)
                 .build();
 
